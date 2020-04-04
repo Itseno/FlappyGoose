@@ -10,6 +10,7 @@ import javax.imageio.*;             // Needed for image import
 public class Game extends JFrame implements KeyListener {
   
   public Image characterImg; // Image storing the character image
+  public Image pipe;
   private int characterX; // Integer storing the character's current x location
   private int characterY; // Integer storing the character's current y location
   
@@ -43,11 +44,19 @@ public class Game extends JFrame implements KeyListener {
     try {
       // Load the image called "character.png" which should be in the same folder as this code
       characterImg = ImageIO.read( new File( "Goose.png" ) );
+      
     } catch( IOException i ) {
       // If there was an error opening the image, output the information about the error
       i.printStackTrace();
     }
-    
+    try {
+      // Load the image called "character.png" which should be in the same folder as this code
+      pipe = ImageIO.read( new File( "pipe.png" ) );
+      
+    } catch( IOException i ) {
+      // If there was an error opening the image, output the information about the error
+      i.printStackTrace();
+    }
     // Initialize the default values for our data
     characterX = 100;
     characterY = 100;
@@ -68,8 +77,13 @@ public class Game extends JFrame implements KeyListener {
      //  System.out.println("Character going up!");
       // System.out.println("onGround: " + onGround);
        characterY -= 6*speed;
-       //onGround = false;
-       
+       try {
+      // Load the image called "character.png" which should be in the same folder as this code
+      characterImg = ImageIO.read( new File( "Goose.png" ) );
+    } catch( IOException i ) {
+      // If there was an error opening the image, output the information about the error
+      i.printStackTrace();
+    }
     }
     // Check if the down key is currently being pressed.
     if( downKey ) {
@@ -86,7 +100,16 @@ public class Game extends JFrame implements KeyListener {
     if(characterY == 382 || characterY == 383){
             onGround = true;
             System.out.println("Character now on Ground");
-            System.out.println("onGround: " + onGround); 
+            System.out.println("onGround: " + onGround);
+            
+            try {
+      // Load the image called "character.png" which should be in the same folder as this code
+      characterImg = ImageIO.read( new File( "Goose2.png" ) );
+    } catch( IOException i ) {
+      // If there was an error opening the image, output the information about the error
+      i.printStackTrace();
+    }
+            
         }
     if(characterY <= 381){
         //System.out.println("Running Gravity");
@@ -102,10 +125,13 @@ public class Game extends JFrame implements KeyListener {
   public void paint( Graphics page ){
     // Create an image, this image is where we will draw the next frame
     Image frame = createImage(getWidth(),getHeight());
+    Image pipeImage = createImage(getWidth(),getHeight());
     // Instantiate a graphics object to store all our items drawn to our frame
     Graphics frameGraphics = frame.getGraphics();
+    Graphics frameGraphicsPipe = frame.getGraphics();
     // Draw the character object at the x and y coordinates defined, make it 100 pixels tall and 100 pixels wide
     frameGraphics.drawImage( characterImg, characterX, characterY, -100, 100, null );
+    frameGraphicsPipe.drawImage(pipe, characterX, characterY, -100, 100, null);
     // Set the graphics we are about to draw to blue
     frameGraphics.setColor( Color.BLUE );
     // Draw some text at coordinates 10, 42 and put the String representing the character's x and y coordinates in
@@ -113,7 +139,7 @@ public class Game extends JFrame implements KeyListener {
     frameGraphics.drawString( upKey + ", " + downKey + ", " + leftKey + ", " + rightKey, 10, 82 );
     // Now swap the currently display screen with the one we just created and draw it at coordinates 0, 0 so it takes up the whole screen
     page.drawImage(frame,0,0,null);
-  }
+}
   
   // We implement a KeyListener so we need three KeyListener methods
   public void keyPressed(KeyEvent e) {
