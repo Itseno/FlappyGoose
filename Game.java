@@ -22,6 +22,24 @@ public class Game extends JFrame implements KeyListener {
   private boolean leftKey; // Boolean true when the left key is being pressed
   private boolean onGround;
   
+  private int screenWidth = 640;
+  private int screenHeight = 480;
+  
+  private int tileSize = 50;
+  
+  private int[][] map= {
+      {1, 1, 1, 1, 1, 1, 1, 1},
+      {1, 0, 0, 0, 0, 0, 0, 1},
+      {1, 0, 0, 0, 0, 0, 0, 1},
+      {1, 0, 0, 0, 0, 0, 0, 1},
+      {1, 0, 0, 0, 0, 0, 0, 1},
+      {1, 0, 0, 0, 0, 0, 0, 1},
+      {1, 0, 0, 0, 0, 0, 0, 1},
+      {1, 1, 1, 1, 1, 1, 1, 1}};
+  
+  private int screenOffsetX = (screenWidth/2) - (tileSize / 2);
+  private int screenOffsetY = (screenHeight/2) - (tileSize / 2);
+      
   // Main method runs automatically
   public static void main( String[] args ) {
     Game game = new Game(); // Instantiate a game object which will store all our data
@@ -35,7 +53,7 @@ public class Game extends JFrame implements KeyListener {
   public Game() {
     super("Game"); // Call the super (in this case JFrame) and set the window's title to "Game"
     setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // Tell the application to close the whole application when the window is closed
-    setSize( 640, 480 ); // Set the size of the window
+    setSize( screenWidth, screenHeight ); // Set the size of the window
     setResizable(false); // Disable the window from being resized
     addKeyListener(this); // Attach a key listener to the window
     setVisible(true); // Show the window
@@ -44,23 +62,16 @@ public class Game extends JFrame implements KeyListener {
     try {
       // Load the image called "character.png" which should be in the same folder as this code
       characterImg = ImageIO.read( new File( "Goose.png" ) );
-      
-    } catch( IOException i ) {
-      // If there was an error opening the image, output the information about the error
-      i.printStackTrace();
-    }
-    try {
-      // Load the image called "character.png" which should be in the same folder as this code
       pipe = ImageIO.read( new File( "pipe.png" ) );
-      
     } catch( IOException i ) {
       // If there was an error opening the image, output the information about the error
       i.printStackTrace();
     }
+   
     // Initialize the default values for our data
     characterX = 100;
     characterY = 100;
-    speed = 1;
+    speed = 2;
     
     // Initialize our default keys
     upKey = false;
@@ -130,8 +141,33 @@ public class Game extends JFrame implements KeyListener {
     Graphics frameGraphics = frame.getGraphics();
     Graphics frameGraphicsPipe = frame.getGraphics();
     // Draw the character object at the x and y coordinates defined, make it 100 pixels tall and 100 pixels wide
-    frameGraphics.drawImage( characterImg, characterX, characterY, -100, 100, null );
-    frameGraphicsPipe.drawImage(pipe, characterX, characterY, -100, 100, null);
+    
+    
+    for(int y=0; y<map.length; y++){
+        for(int x = 0; x<map[y].length; x++){
+        if(map[y][x] == 0){
+        frameGraphics.drawImage(
+            pipe,
+            (x*tileSize) + characterX - screenOffsetX,
+            (y*tileSize) + characterY - screenOffsetY,
+            tileSize,
+            tileSize,
+            null
+        );
+        } else if(map[y][x] == 1){
+        frameGraphics.drawImage(
+            characterImg,
+            (x*tileSize) + characterX - screenOffsetX,
+            (y*tileSize) + characterY - screenOffsetY,
+            tileSize,
+            tileSize,
+            null
+        );
+        }
+    }
+    }
+    
+    frameGraphics.drawImage( characterImg, screenOffsetX, screenOffsetY, tileSize, tileSize, null );
     // Set the graphics we are about to draw to blue
     frameGraphics.setColor( Color.BLUE );
     // Draw some text at coordinates 10, 42 and put the String representing the character's x and y coordinates in
