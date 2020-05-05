@@ -6,12 +6,15 @@ import java.awt.event.KeyListener;  // Needed for key identification
 import javax.swing.*;               // Needed for windows and frames
 import javax.imageio.*;             // Needed for image import
 
+
 // Declare a new class called Game which uses JFrame and KeyListener
 public class Game extends JFrame implements KeyListener {
   
   public Image characterImg; // Image storing the character image
   public Image pipe;
   public Image sky;
+  public Image grass;
+  public Image cloud;
   private int characterX; // Integer storing the character's current x location
   private int characterY; // Integer storing the character's current y location
   
@@ -26,29 +29,25 @@ public class Game extends JFrame implements KeyListener {
   private int screenWidth = 640;
   private int screenHeight = 480;
   
-  private int tileSize = 50;
+  private int tileSize = 51;
   
    private int[][] map = 
-                {{ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 },
-                 { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
-                 { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
-                 { 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1 },
-                 { 1, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 1, 0, 0, 1 },
-                 { 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1 },
-                 { 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1 },
-                 { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1 },
-                 { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1 },
-                 { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1 },
-                 { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
-                 { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
-                 { 1, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1 },
-                 { 1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 1 },
-                 { 1, 0, 0, 0, 1, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 1 },
-                 { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 }};
+                {{ 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3 },
+                 { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0 },
+                 { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0 },
+                 { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0 },
+                 { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0 },
+                 { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0 },
+                 { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0 },
+                 { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0 },
+                 { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0 },
+                 { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0 },
+                 { 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2 }};
   
   private int screenOffsetX = (screenWidth/2) - (tileSize / 2);
   private int screenOffsetY = (screenHeight/2) - (tileSize / 2);
-      
+  private boolean flyKeyP = true;
+  private boolean flyKeyR = true;
   // Main method runs automatically
   public static void main( String[] args ) {
     Game game = new Game(); // Instantiate a game object which will store all our data
@@ -73,6 +72,8 @@ public class Game extends JFrame implements KeyListener {
       characterImg = ImageIO.read( new File( "Goose.png" ) );
       pipe = ImageIO.read( new File( "pipe.png" ) );
       sky = ImageIO.read( new File("sky.png"));
+      cloud = ImageIO.read( new File("cloud.jpg"));
+      grass = ImageIO.read( new File("grass.jpg"));
     } catch( IOException i ) {
       // If there was an error opening the image, output the information about the error
       i.printStackTrace();
@@ -94,31 +95,44 @@ public class Game extends JFrame implements KeyListener {
   // Heartbeat executes at the beginning of every frame
   public void heartbeat() {
     // Check if the up key is currently being pressed.
-    if( upKey) {
+    if( downKey) {
      //  System.out.println("Character going up!");
       // System.out.println("onGround: " + onGround);
-       characterY -= 6*speed;
-       try {
-      // Load the image called "character.png" which should be in the same folder as this code
-      characterImg = ImageIO.read( new File( "Goose.png" ) );
-    } catch( IOException i ) {
-      // If there was an error opening the image, output the information about the error
-      i.printStackTrace();
-    }
+      if(flyKeyR == false && flyKeyP == true){
+          
+          characterY += 4*speed;
+           try {
+          // Load the image called "character.png" which should be in the same folder as this code
+          characterImg = ImageIO.read( new File( "Goose.png" ) );
+        } catch( IOException i ) {
+          // If there was an error opening the image, output the information about the error
+          i.printStackTrace();
+        }
+      
+        }
+      
     }
     // Check if the down key is currently being pressed.
-    if( downKey ) {
+    if( upKey ) {
       characterY += speed; // Move the character up by speed number of pixels
+
     }
     // Check if the right key is currently being pressed.
     if( rightKey ) {
       characterX += 3*speed; // Move the character up by speed number of pixels
+      int tileX = ( characterX / tileSize );
+      int tileY = ( characterY / tileSize );
+      if( map[tileY][tileX] == 0 ||
+          map[tileY+1][tileX] == 0 ){
+          characterX = ( (tileX+1) * tileSize );
+      }
+      //CHECK - Why does this throw an error?
     }
     // Check if the left key is currently being pressed.
     if( leftKey ) {
       characterX -= 3*speed; // Move the character up by speed number of pixels
     }
-    if(characterY == -332 || characterY == -333){
+    if(characterY == -55 || characterY == -53){
             onGround = true;
             System.out.println("Character now on Ground");
             System.out.println("onGround: " + onGround);
@@ -132,13 +146,31 @@ public class Game extends JFrame implements KeyListener {
     }
             
         }
-    if(characterY <= 381 && characterY >= -332){
+    if(characterY <= 381 && characterY >= -53){
         //System.out.println("Running Gravity");
         //System.out.println("onGround: " + onGround);
         //onGround = false;
         characterY -= (2*speed);
+    } else if(characterY >= 381){
+        characterY = 380;
     }
     // Call the screen to redraw the content, calls paint below
+    
+    int tileX = ( ( characterX + ( tileSize / 2 ) ) / tileSize );
+    int tileY = ( ( characterY + ( tileSize / 2 ) ) / tileSize );
+    
+    if( tileY >= 0 && tileX >= 0 &&
+        map.length > tileY && map[tileY].length > tileX ){
+            if( map[tileY][tileX] == -1 ){
+               System.out.println("" + map[tileY][tileX]);
+                System.exit(0);
+            }
+        
+        
+        
+        }
+    
+    
     repaint();
   }
   
@@ -173,9 +205,28 @@ public class Game extends JFrame implements KeyListener {
             tileSize,
             null
         );
-        }
+      } else if(map[y][x] == 2){
+        frameGraphics.drawImage(
+            grass,
+            (x*tileSize) + characterX - screenOffsetX,
+            (y*tileSize) + characterY - screenOffsetY,
+            tileSize,
+            tileSize,
+            null
+        );
     }
+    else if(map[y][x] == 3){
+        frameGraphics.drawImage(
+            cloud,
+            (x*tileSize) + characterX - screenOffsetX,
+            (y*tileSize) + characterY - screenOffsetY,
+            tileSize,
+            tileSize,
+            null
+        );
     }
+}
+}
     
     frameGraphics.drawImage( characterImg, screenOffsetX, screenOffsetY, tileSize, tileSize, null );
     // Set the graphics we are about to draw to blue
@@ -190,8 +241,10 @@ public class Game extends JFrame implements KeyListener {
   // We implement a KeyListener so we need three KeyListener methods
   public void keyPressed(KeyEvent e) {
     // check if either the 'w' key or the up arrow is the key being pressed
-    if( e.getKeyChar() == 'w' || e.getKeyCode() == KeyEvent.VK_UP ) {
-      // if either is being pressed, set the upKey boolean to true
+    if( (e.getKeyChar() == 'w' || e.getKeyCode() == KeyEvent.VK_UP) && flyKeyR == true) {
+      flyKeyR= false;
+        flyKeyP = true;
+        // if either is being pressed, set the upKey boolean to true
       downKey = true;
     }
     // check if either the 's' key or the down arrow is the key being pressed
@@ -214,7 +267,8 @@ public class Game extends JFrame implements KeyListener {
   public void keyReleased(KeyEvent e) {
     // check if either the 'w' key or the up arrow is the key being released
     if( e.getKeyChar() == 'w' || e.getKeyCode() == KeyEvent.VK_UP ) {
-      // if either is being released, set the rightKey boolean to false
+      flyKeyR = true;
+        // if either is being released, set the rightKey boolean to false
       downKey = false;
     }
     // check if either the 's' key or the down arrow is the key being released
