@@ -11,6 +11,7 @@ public class Game extends JFrame implements KeyListener {
   
   public Image characterImg; // Image storing the character image
   public Image pipe;
+  public Image sky;
   private int characterX; // Integer storing the character's current x location
   private int characterY; // Integer storing the character's current y location
   
@@ -27,15 +28,23 @@ public class Game extends JFrame implements KeyListener {
   
   private int tileSize = 50;
   
-  private int[][] map= {
-      {1, 1, 1, 1, 1, 1, 1, 1},
-      {1, 0, 0, 0, 0, 0, 0, 1},
-      {1, 0, 0, 0, 0, 0, 0, 1},
-      {1, 0, 0, 0, 0, 0, 0, 1},
-      {1, 0, 0, 0, 0, 0, 0, 1},
-      {1, 0, 0, 0, 0, 0, 0, 1},
-      {1, 0, 0, 0, 0, 0, 0, 1},
-      {1, 1, 1, 1, 1, 1, 1, 1}};
+   private int[][] map = 
+                {{ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 },
+                 { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
+                 { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
+                 { 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1 },
+                 { 1, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 1, 0, 0, 1 },
+                 { 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1 },
+                 { 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1 },
+                 { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1 },
+                 { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1 },
+                 { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1 },
+                 { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
+                 { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
+                 { 1, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1 },
+                 { 1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 1 },
+                 { 1, 0, 0, 0, 1, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 1 },
+                 { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 }};
   
   private int screenOffsetX = (screenWidth/2) - (tileSize / 2);
   private int screenOffsetY = (screenHeight/2) - (tileSize / 2);
@@ -63,6 +72,7 @@ public class Game extends JFrame implements KeyListener {
       // Load the image called "character.png" which should be in the same folder as this code
       characterImg = ImageIO.read( new File( "Goose.png" ) );
       pipe = ImageIO.read( new File( "pipe.png" ) );
+      sky = ImageIO.read( new File("sky.png"));
     } catch( IOException i ) {
       // If there was an error opening the image, output the information about the error
       i.printStackTrace();
@@ -108,7 +118,7 @@ public class Game extends JFrame implements KeyListener {
     if( leftKey ) {
       characterX -= 3*speed; // Move the character up by speed number of pixels
     }
-    if(characterY == 382 || characterY == 383){
+    if(characterY == -332 || characterY == -333){
             onGround = true;
             System.out.println("Character now on Ground");
             System.out.println("onGround: " + onGround);
@@ -122,11 +132,11 @@ public class Game extends JFrame implements KeyListener {
     }
             
         }
-    if(characterY <= 381){
+    if(characterY <= 381 && characterY >= -332){
         //System.out.println("Running Gravity");
         //System.out.println("onGround: " + onGround);
         //onGround = false;
-        characterY += (3*speed);
+        characterY -= (2*speed);
     }
     // Call the screen to redraw the content, calls paint below
     repaint();
@@ -156,7 +166,7 @@ public class Game extends JFrame implements KeyListener {
         );
         } else if(map[y][x] == 1){
         frameGraphics.drawImage(
-            characterImg,
+            sky,
             (x*tileSize) + characterX - screenOffsetX,
             (y*tileSize) + characterY - screenOffsetY,
             tileSize,
@@ -182,22 +192,22 @@ public class Game extends JFrame implements KeyListener {
     // check if either the 'w' key or the up arrow is the key being pressed
     if( e.getKeyChar() == 'w' || e.getKeyCode() == KeyEvent.VK_UP ) {
       // if either is being pressed, set the upKey boolean to true
-      upKey = true;
+      downKey = true;
     }
     // check if either the 's' key or the down arrow is the key being pressed
     if( e.getKeyChar() == 's' || e.getKeyCode() == KeyEvent.VK_DOWN ) {
       // if either is being pressed, set the downKey boolean to true
-      downKey = true;
+      upKey = true;
     }
     // check if either the 'd' key or the right arrow is the key being pressed
     if( e.getKeyChar() == 'd' || e.getKeyCode() == KeyEvent.VK_RIGHT ) {
       // if either is being pressed, set the rightKey boolean to true
-      rightKey = true;
+      leftKey = true;
     }
     // check if either the 'a' key or the left arrow is the key being pressed
     if( e.getKeyChar() == 'a' || e.getKeyCode() == KeyEvent.VK_LEFT ) {
       // if either is being pressed, set the leftKey boolean to true
-      leftKey = true;
+      rightKey = true;
     }
   } 
   
@@ -205,22 +215,22 @@ public class Game extends JFrame implements KeyListener {
     // check if either the 'w' key or the up arrow is the key being released
     if( e.getKeyChar() == 'w' || e.getKeyCode() == KeyEvent.VK_UP ) {
       // if either is being released, set the rightKey boolean to false
-      upKey = false;
+      downKey = false;
     }
     // check if either the 's' key or the down arrow is the key being released
     if( e.getKeyChar() == 's' || e.getKeyCode() == KeyEvent.VK_DOWN ) {
       // if either is being released, set the rightKey boolean to false
-      downKey = false;
+      upKey = false;
     }
     // check if either the 'd' key or the right arrow is the key being released
     if( e.getKeyChar() == 'd' || e.getKeyCode() == KeyEvent.VK_RIGHT ) {
       // if either is being released, set the rightKey boolean to false
-      rightKey = false;
+      leftKey = false;
     }
     // check if either the 'a' key or the left arrow is the key being released
     if( e.getKeyChar() == 'a' || e.getKeyCode() == KeyEvent.VK_LEFT ) {
       // if either is being released, set the rightKey boolean to false
-      leftKey = false;
+      rightKey = false;
     }
   }
   
