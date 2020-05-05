@@ -15,6 +15,7 @@ public class Game extends JFrame implements KeyListener {
   public Image sky;
   public Image grass;
   public Image cloud;
+  public Image finish;
   private int characterX; // Integer storing the character's current x location
   private int characterY; // Integer storing the character's current y location
   
@@ -33,21 +34,24 @@ public class Game extends JFrame implements KeyListener {
   
    private int[][] map = 
                 {{ 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3 },
-                 { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0 },
-                 { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0 },
-                 { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0 },
-                 { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0 },
-                 { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0 },
-                 { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0 },
-                 { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0 },
-                 { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0 },
-                 { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0 },
+                 { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 4 },
+                 { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 4 },
+                 { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 4 },
+                 { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 4 },
+                 { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 4 },
+                 { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 4 },
+                 { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 4 },
+                 { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 4 },
+                 { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 4 },
                  { 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2 }};
   
   private int screenOffsetX = (screenWidth/2) - (tileSize / 2);
   private int screenOffsetY = (screenHeight/2) - (tileSize / 2);
   private boolean flyKeyP = true;
   private boolean flyKeyR = true;
+  private String lifeStatus = "Alive";
+  private int trackScore = 0;
+  
   // Main method runs automatically
   public static void main( String[] args ) {
     Game game = new Game(); // Instantiate a game object which will store all our data
@@ -74,6 +78,7 @@ public class Game extends JFrame implements KeyListener {
       sky = ImageIO.read( new File("sky.png"));
       cloud = ImageIO.read( new File("cloud.jpg"));
       grass = ImageIO.read( new File("grass.jpg"));
+      finish = ImageIO.read( new File("finish.png"));
     } catch( IOException i ) {
       // If there was an error opening the image, output the information about the error
       i.printStackTrace();
@@ -99,7 +104,7 @@ public class Game extends JFrame implements KeyListener {
      //  System.out.println("Character going up!");
       // System.out.println("onGround: " + onGround);
       if(flyKeyR == false && flyKeyP == true){
-          
+          //CHange from 4 to 2 when testing
           characterY += 4*speed;
            try {
           // Load the image called "character.png" which should be in the same folder as this code
@@ -114,38 +119,33 @@ public class Game extends JFrame implements KeyListener {
     }
     // Check if the down key is currently being pressed.
     if( upKey ) {
-      characterY += speed; // Move the character up by speed number of pixels
+      characterY -= speed; // Move the character up by speed number of pixels
 
     }
     // Check if the right key is currently being pressed.
     if( rightKey ) {
       characterX += 3*speed; // Move the character up by speed number of pixels
-      int tileX = ( characterX / tileSize );
-      int tileY = ( characterY / tileSize );
-      if( map[tileY][tileX] == 0 ||
-          map[tileY+1][tileX] == 0 ){
-          characterX = ( (tileX+1) * tileSize );
-      }
-      //CHECK - Why does this throw an error?
     }
     // Check if the left key is currently being pressed.
     if( leftKey ) {
       characterX -= 3*speed; // Move the character up by speed number of pixels
     }
-    if(characterY == -55 || characterY == -53){
+    if(characterY <= -55){
             onGround = true;
-            System.out.println("Character now on Ground");
-            System.out.println("onGround: " + onGround);
+            //System.out.println("Character now on Ground");
+            //System.out.println("onGround: " + onGround);
             
-            try {
+     try {
       // Load the image called "character.png" which should be in the same folder as this code
       characterImg = ImageIO.read( new File( "Goose2.png" ) );
     } catch( IOException i ) {
       // If there was an error opening the image, output the information about the error
       i.printStackTrace();
     }
-            
-        }
+    if(characterX > 580){
+        characterX = 580;
+    }        
+    }
     if(characterY <= 381 && characterY >= -53){
         //System.out.println("Running Gravity");
         //System.out.println("onGround: " + onGround);
@@ -159,18 +159,75 @@ public class Game extends JFrame implements KeyListener {
     int tileX = ( ( characterX + ( tileSize / 2 ) ) / tileSize );
     int tileY = ( ( characterY + ( tileSize / 2 ) ) / tileSize );
     
-    if( tileY >= 0 && tileX >= 0 &&
-        map.length > tileY && map[tileY].length > tileX ){
-            if( map[tileY][tileX] == -1 ){
-               System.out.println("" + map[tileY][tileX]);
-                System.exit(0);
-            }
+   
+    if(characterX == -182 && (characterY > 236 || characterY < 142)){
+        lifeStatus = "Dead";
+        System.out.println("Game Over!");
+        System.out.println("Your final track score was: " + trackScore + ". Will you beat it next game?");
+        System.exit(0);
+    } else if(characterX == -380 && (characterY < 102 || characterY > 188)){
+        lifeStatus = "Dead";
+        System.out.println("Game Over!");
+        System.out.println("Your final track score was: " + trackScore + ". Will you beat it next game?");
+        System.exit(0);
+    }else if(characterX == -584 && (characterY < 148 || characterY > 240)){
+        lifeStatus = "Dead";
+        System.out.println("Game Over!");
+        System.out.println("Your final track score was: " + trackScore + ". Will you beat it next game?");
+        System.exit(0);
+    }else if(characterX == -794 && (characterY < -8 || characterY > 86)){
+        lifeStatus = "Dead";
+        System.out.println("Game Over!");
+        System.out.println("Your final track score was: " + trackScore + ". Will you beat it next game?");
+        System.exit(0);
+    }else if(characterX == -998 && (characterY < 200 || characterY > 288)){
+        lifeStatus = "Dead";
+        System.out.println("Game Over!");
+        System.out.println("Your final track score was: " + trackScore + ". Will you beat it next game?");
+        System.exit(0);
+    }else if(characterX == -1196 && (characterY < 98 || characterY > 186)){
+        lifeStatus = "Dead";
+        System.out.println("Game Over!");
+        System.out.println("Your final track score was: " + trackScore + ". Will you beat it next game?");
+        System.exit(0);
+    }else if(characterX == -1352 && (characterY < 98 || characterY > 186)){
+        lifeStatus = "Dead";
+        System.out.println("Game Over!");
+        System.out.println("Your final track score was: " + trackScore + ". Will you beat it next game?");
+        System.exit(0);
+    }else if(characterX == -1156 && (characterY < 748 || characterY > 342)){
+        lifeStatus = "Dead";
+        System.out.println("Game Over!");
+        System.out.println("Your final track score was: " + trackScore + ". Will you beat it next game?");
+        System.exit(0);
+    }else if(characterX == -1832 && (characterY < -2 || characterY > 86)){
+        lifeStatus = "Dead";
+        System.out.println("Game Over!");
+        System.out.println("Your final track score was: " + trackScore + ". Will you beat it next game?");
+        System.exit(0);
+    }else if(characterX == -2012 && (characterY < 146 || characterY > 240)){
+        lifeStatus = "Dead";
+        System.out.println("Game Over!");
+        System.out.println("Your final track score was: " + trackScore + ". Will you beat it next game?");
+        System.exit(0);
+    }else if(characterX == -2216 && (characterY < 0 || characterY > 84)){
+        lifeStatus = "Dead";
+        System.out.println("Game Over!");
+        System.out.println("Your final track score was: " + trackScore + ". Will you beat it next game?");
+        System.exit(0);
+    }else if(characterX == -2420 && (characterY < 138 || characterY > 192)){
+        lifeStatus = "Dead";
+        System.out.println("Game Over!");
+        System.out.println("Your final track score was: " + trackScore + ". Will you beat it next game?");
+        System.exit(0);
+    }else if(characterX == -2594){
+        characterX = 100;
+        characterY = 100;
+        System.out.println("You completed the track! Can you do it again?");
+        trackScore += 1;
+        System.out.println("Track Score: " + trackScore);
+    }
         
-        
-        
-        }
-    
-    
     repaint();
   }
   
@@ -224,6 +281,15 @@ public class Game extends JFrame implements KeyListener {
             tileSize,
             null
         );
+    }else if(map[y][x] == 4){
+        frameGraphics.drawImage(
+            finish,
+            (x*tileSize) + characterX - screenOffsetX,
+            (y*tileSize) + characterY - screenOffsetY,
+            tileSize,
+            tileSize,
+            null
+        );
     }
 }
 }
@@ -233,7 +299,9 @@ public class Game extends JFrame implements KeyListener {
     frameGraphics.setColor( Color.BLUE );
     // Draw some text at coordinates 10, 42 and put the String representing the character's x and y coordinates in
     frameGraphics.drawString( characterX + ", " + characterY, 10, 42 );
-    frameGraphics.drawString( upKey + ", " + downKey + ", " + leftKey + ", " + rightKey, 10, 82 );
+    frameGraphics.drawString( upKey + ", " + downKey + ", " + leftKey + ", " + rightKey, 10, 62 );
+    frameGraphics.drawString( "You are: " + lifeStatus, 10, 82 );
+    frameGraphics.drawString( "Track Score: " + trackScore, 10, 102 );
     // Now swap the currently display screen with the one we just created and draw it at coordinates 0, 0 so it takes up the whole screen
     page.drawImage(frame,0,0,null);
 }
